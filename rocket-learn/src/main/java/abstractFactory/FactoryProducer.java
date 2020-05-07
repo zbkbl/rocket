@@ -1,7 +1,5 @@
 package abstractFactory;
 
-import org.junit.Test;
-
 /**
  * @description: 工厂生成器
  * @author: Liuyang
@@ -18,15 +16,4 @@ public class FactoryProducer {
         return null;
     }
 
-
-    @Test
-    public void test(){
-        AbstractFactory shapeFactory = FactoryProducer.getFactory("shape");
-        Shape shape1 = shapeFactory.getShape("circle");
-        shape1.draw();
-
-        AbstractFactory colorFactory = FactoryProducer.getFactory("color");
-        Color color = colorFactory.getColor("red");
-        color.fill();
-    }
 }

@@ -1,7 +1,5 @@
 package abstractFactory.staticFactory;
 
-import abstractFactory.singleton.Singleton;
-import org.junit.Test;
 
 /**
  * @description: 静态工厂
@@ -16,10 +14,5 @@ public class SendFactory {
 
     public static Sender produceSms(){
         return new SmsSender();
-    }
-
-    @Test
-    public void test(){
-        System.out.println(Singleton.getInstance());
     }
 }

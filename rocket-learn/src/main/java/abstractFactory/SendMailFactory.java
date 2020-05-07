@@ -2,7 +2,6 @@ package abstractFactory;
 
 import abstractFactory.staticFactory.MailSender;
 import abstractFactory.staticFactory.Sender;
-import org.junit.Test;
 
 /**
  * @description: 邮件工厂
@@ -15,10 +14,4 @@ public class SendMailFactory implements Provider {
         return new MailSender();
     }
 
-    @Test
-    public void test() {
-        Provider p = new SendMailFactory();
-        Sender s = p.produce();
-        s.send();
-    }
 }
