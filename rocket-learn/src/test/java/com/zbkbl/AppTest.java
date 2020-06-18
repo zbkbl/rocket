@@ -9,6 +9,10 @@ import builder.Meal;
 import builder.MealBuilder;
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 /**
  * Unit test for simple App.
  */
@@ -60,5 +64,28 @@ public class AppTest
     @Test
     public void test4(){
         System.out.println(Singleton.getInstance());
+    }
+
+
+    @Test
+    public void test5(){
+        Set<Integer>  set = new HashSet<>();
+        set.add(1);
+        set.add(2);
+        Set set1 = new HashSet();
+        for (Integer i:set){
+            set1.add(i);
+        }
+
+        Iterator<Integer> iterator = set.iterator();
+        while (iterator.hasNext()){
+            Integer a = iterator.next();
+            if(a == 1){
+                iterator.remove();
+            }
+        }
+
+        System.out.println(set);
+        System.out.println(set1);
     }
 }
