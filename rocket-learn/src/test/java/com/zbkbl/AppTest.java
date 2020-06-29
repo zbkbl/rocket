@@ -7,11 +7,10 @@ import abstractFactory.singleton.Singleton;
 import abstractFactory.staticFactory.Sender;
 import builder.Meal;
 import builder.MealBuilder;
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Unit test for simple App.
@@ -87,5 +86,28 @@ public class AppTest
 
         System.out.println(set);
         System.out.println(set1);
+    }
+
+
+    @Test
+    public void test6(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", "liuyang");
+        jsonObject.put("filterInfo", "test");
+        JSONObject jsonObject1 = new JSONObject();
+        jsonObject1.put("name", "liuyang1");
+        JSONObject jsonObject2 = new JSONObject();
+        jsonObject2.put("name", "liuyang2");
+        JSONObject jsonObject3 = new JSONObject();
+        jsonObject3.put("name", "liuyang3");
+        List<JSONObject> filterInfos = new ArrayList<>();
+        filterInfos.add(jsonObject);
+        filterInfos.add(jsonObject1);
+        filterInfos.add(jsonObject2);
+        filterInfos.add(jsonObject3);
+        for(JSONObject json : filterInfos){
+                json.remove("filterInfo");
+        }
+        System.out.println(filterInfos);
     }
 }
