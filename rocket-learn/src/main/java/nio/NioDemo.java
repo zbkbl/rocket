@@ -17,7 +17,7 @@ import java.util.List;
  **/
 public class NioDemo {
 
-    private static final String path = "/Users/liuyang/IdeaProjects/rocket/rocket-learn/object.txt";
+    private static final String path = "/data/app/rps/remote-config/rps-boss";
 
     public static void main(String[] args) {
 //        try {
@@ -26,26 +26,26 @@ public class NioDemo {
 //            e.printStackTrace();
 //        }
 
-//        PluginRegisterInfoPo p = new PluginRegisterInfoPo();
-//        p.setId(1);
-//        p.setPluginName("shortList");
-//        p.setType(1);
-//        p.setInterfaceName("shortListInterface");
-//        p.setImplementation("shortListImpl");
-//        p.setRcdType(1);
-//
-//        PluginRegisterInfoPo p1 = new PluginRegisterInfoPo();
-//        p1.setId(2);
-//        p1.setPluginName("longList");
-//        p1.setType(2);
-//        p1.setInterfaceName("longListInterface");
-//        p1.setImplementation("longListImpl");
-//        p1.setRcdType(2);
-//
-//        List<PluginRegisterInfoPo> list = new ArrayList<>();
-//        list.add(p);
-//        list.add(p1);
-//        writeList(list);
+        PluginRegisterInfoPo p = new PluginRegisterInfoPo();
+        p.setId(1);
+        p.setPluginName("shortList");
+        p.setType(1);
+        p.setInterfaceName("shortListInterface");
+        p.setImplementation("shortListImpl");
+        p.setRcdType(1);
+
+        PluginRegisterInfoPo p1 = new PluginRegisterInfoPo();
+        p1.setId(2);
+        p1.setPluginName("longList");
+        p1.setType(2);
+        p1.setInterfaceName("longListInterface");
+        p1.setImplementation("longListImpl");
+        p1.setRcdType(2);
+
+        List<PluginRegisterInfoPo> list = new ArrayList<>();
+        list.add(p);
+        list.add(p1);
+        writeList(list);
         readList();
     }
 
@@ -157,7 +157,12 @@ public class NioDemo {
     private static void writeList(List<PluginRegisterInfoPo> plugins) {
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(path, false);
+            File filePath = new File(path);
+            if(!filePath.exists() && !filePath.mkdirs()){
+                return;
+            }
+            File file = new File(path + File.separator + "boss-config");
+            fos = new FileOutputStream(file, false);
             for(PluginRegisterInfoPo p : plugins){
                 byte[] bytes = ProtoStuffUtil.serialize(p);
                 ByteBuffer lengthBuffer = ByteBuffer.allocate(4);
@@ -173,8 +178,9 @@ public class NioDemo {
     private static List<PluginRegisterInfoPo> readList() {
         List<PluginRegisterInfoPo> list = new ArrayList<>();
         try {
-            if (new File(path).exists()) {
-                InputStream stream = new FileInputStream(path);
+            File file = new File(path + File.separator + "boss-config");
+            if (file.exists()) {
+                InputStream stream = new FileInputStream(file);
                 byte[] lengthData = new byte[4];
                 while (stream.read(lengthData) != -1) {
                     int length = transIntValue(lengthData);
@@ -186,6 +192,7 @@ public class NioDemo {
         }catch (Exception e){
             e.printStackTrace();
         }
+        System.out.println(list);
         return list;
     }
 

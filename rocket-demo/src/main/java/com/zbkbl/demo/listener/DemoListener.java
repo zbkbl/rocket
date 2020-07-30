@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class DemoListener implements SmartApplicationListener {
+
     @Override
     public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
         return eventType == DemoEvent.class;

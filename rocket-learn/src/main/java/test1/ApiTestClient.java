@@ -32,4 +32,10 @@ public class ApiTestClient {
 //        System.out.println(result.getReachInfoList());
 //        System.out.println(result.getCount());
 //    }
+
+
+    public static void main(String[] args) {
+    }
+
+
 }

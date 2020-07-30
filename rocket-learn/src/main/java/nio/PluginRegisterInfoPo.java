@@ -153,4 +153,26 @@ public class PluginRegisterInfoPo {
     public void setProviderEnv(String providerEnv) {
         this.providerEnv = providerEnv;
     }
+
+    @Override
+    public String toString() {
+        return "PluginRegisterInfoPo{" +
+                "id=" + id +
+                ", pluginName='" + pluginName + '\'' +
+                ", type=" + type +
+                ", interfaceName='" + interfaceName + '\'' +
+                ", implementation='" + implementation + '\'' +
+                ", rcdType=" + rcdType +
+                ", rcdProduct=" + rcdProduct +
+                ", pluginMode=" + pluginMode +
+                ", zkAddr='" + zkAddr + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", version='" + version + '\'' +
+                ", protocol='" + protocol + '\'' +
+                ", addTime=" + addTime +
+                ", author='" + author + '\'' +
+                ", timeout=" + timeout +
+                ", providerEnv='" + providerEnv + '\'' +
+                '}';
+    }
 }

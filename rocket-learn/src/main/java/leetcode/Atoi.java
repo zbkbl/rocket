@@ -7,7 +7,7 @@ package leetcode;
  **/
 public class Atoi {
     public static void main(String[] args) {
-        System.out.println(atoi("2147483646"));
+        System.out.println(atoi("-2147483649"));
     }
 
     private static int string2Int(String str) {
@@ -45,47 +45,42 @@ public class Atoi {
     }
 
     private static int atoi(String str) {
-        if (str == null) return 0;
-        str = str.trim();
-        if (str.equals("")) return 0;
-
+        if (str == null) {
+            return 0;
+        }
 
         int i = 0;
-        while (i < str.length() && str.charAt(i) == ' ') {
+        while (i < str.length() && ' ' == str.charAt(i)) {
             i++;
         }
-        if (i == str.length())
+        if (i == str.length()) {
             return 0;
-        char[] chars = str.toCharArray();
+        }
         int flag = 1;
         int res = 0;
-        char c = chars[i];
-        if (c == '-') {
+        char[] chars = str.toCharArray();
+        if (chars[i] == '+') {
+            i++;
+        } else if (str.charAt(i) == '-') {
             flag = -1;
             i++;
+        } else if(chars[i] < '0' || chars[i] > '9'){
+            return 0;
         }
-        if (c == '+') {
-            flag = 1;
-            i++;
-        }
-        if (47 < c && c < 58) {
-            flag = 1;
-        }
-        for (; i < chars.length; i++) {
-            if (47 > chars[i] || chars[i] > 58) break;
-            res = res * 10 + (chars[i] - '0');
-            boolean condition = i + 1 < chars.length && chars[i + 1] > 47 && chars[i + 1] < 58;
-            if (flag > 0 && condition && res > Integer.MAX_VALUE / 10) {
-                return Integer.MAX_VALUE;
-            }
-            if (flag > 0 && condition && res == Integer.MAX_VALUE / 10 && chars[i + 1] - '0' > Integer.MAX_VALUE % 10)
-                return Integer.MAX_VALUE;
-            if (flag < 0 && condition && -res < Integer.MIN_VALUE / 10)
-                return Integer.MIN_VALUE;
-            if (flag < 0 && condition && -res == Integer.MIN_VALUE / 10 && -(chars[i + 1] - '0') < Integer.MIN_VALUE % 10)
-                return Integer.MIN_VALUE;
 
+        for (; i < chars.length; i++) {
+            if (chars[i] < '0' || chars[i] > '9') break;
+            res = res * 10 + (chars[i] - '0');
+            boolean condition = (i + 1 < chars.length) && (chars[i + 1] >= '0') && (chars[i + 1] <= '9');
+            if (flag > 0 && condition
+                    && (res > Integer.MAX_VALUE / 10
+                    || (res == Integer.MAX_VALUE / 10 && chars[i + 1] - '0' > Integer.MAX_VALUE % 10)))
+                return Integer.MAX_VALUE;
+            if (flag < 0 && condition
+                    && (-res < Integer.MIN_VALUE / 10
+                    || (-res == Integer.MIN_VALUE / 10 && -(chars[i + 1] - '0') < Integer.MIN_VALUE % 10)))
+                return Integer.MIN_VALUE;
         }
-        return flag * res;
+        return res * flag;
     }
 }

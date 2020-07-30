@@ -46,18 +46,18 @@ public class RomanNumber {
     }
 
     private static String intToRoman(int num) {
-        StringBuilder ans = new StringBuilder();
-        String[] roman = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
-        int[] arab = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        StringBuilder sb = new StringBuilder();
+        int[] number = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] arab = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
         int index = 0;
         while (num > 0) {
-            int count = num / arab[index];
+            int count = num / number[index];
             while (count-- > 0) {
-                ans.append(roman[index]);
+                sb.append(arab[index]);
             }
-            num %= arab[index];
+            num %= number[index];
             index++;
         }
-        return ans.toString();
+        return sb.toString();
     }
 }

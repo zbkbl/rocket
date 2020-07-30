@@ -30,7 +30,7 @@ public class ProtoStuffUtil {
         return schema;
     }
 
-    public static <T> byte[] serialize(T obj) {
+    static <T> byte[] serialize(T obj) {
         if(obj == null ){
             return null;
         }
@@ -50,7 +50,7 @@ public class ProtoStuffUtil {
         return var4;
     }
 
-    public static <T> T deserialize(byte[] data, Class<T> clazz) {
+    static <T> T deserialize(byte[] data, Class<T> clazz) {
         if(data == null ){
             return null;
         }

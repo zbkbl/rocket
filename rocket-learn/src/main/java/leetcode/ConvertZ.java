@@ -12,8 +12,8 @@ public class ConvertZ {
 
     public static void main(String[] args) {
 //        System.out.println(getColumnNum(16, 4));
-        String s = "A";
-        convert(s, 1);
+        String s = "LEETCODEISHIRING";
+        convert(s, 4);
     }
 
 
@@ -24,15 +24,20 @@ public class ConvertZ {
         int column = getColumnNum(l, numRows);
         char[][] bucket = new char[numRows][column];
         putChar(bucket, s, numRows, column);
-
+        print(bucket);
         return outPutString(bucket);
     }
 
     private static int getColumnNum(int length, int row) {
+        // 每一次循环可以put的字符数
         int b = row + row - 2;
+        // 需要几组
         int i = length / b;
+        // 组*列数
         int currentColumn = i * (row - 1);
+        // 还剩余多少字符没放
         int j = length % b;
+        // 还需要几列
         int y;
         if (j >= row) {
             y = 1 + j % row;

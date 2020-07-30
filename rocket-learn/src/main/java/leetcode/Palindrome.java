@@ -8,7 +8,7 @@ package leetcode;
 public class Palindrome {
 
     public static void main(String[] args) {
-        System.out.println(isPalindrome2(Integer.MAX_VALUE));
+        System.out.println(isPalindrome5(12221));
     }
 
     private static boolean isPalindrome(int x) {
@@ -53,5 +53,16 @@ public class Palindrome {
         }
 
         return x == sum || x == sum / 10;
+    }
+
+    private static boolean isPalindrome5(int x) {
+        if (x < 0 || (x != 0 && x % 10 == 0)) return false;
+        int y = x ;
+        int sum = 0;
+        while (x != 0) {
+            sum = sum * 10 + x % 10;
+            x /= 10;
+        }
+        return y == sum;
     }
 }
