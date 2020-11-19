@@ -9,6 +9,7 @@ public class RomanNumber {
     public static void main(String[] args) {
 //        System.out.println(3*"I");
         System.out.println(intToRoman(1994));
+        System.out.println(romanToInt("MCMXCIV"));
     }
 
     private static String transToRoman(int num) {
@@ -60,4 +61,49 @@ public class RomanNumber {
         }
         return sb.toString();
     }
+
+    private static int romanToInt(String s) {
+        int[] number = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] arab = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        int res = 0;
+        int i = 0;
+        int index = -1;
+        while (i < s.length()) {
+            int current;
+            String target = s.substring(i, i + 1);
+            if (i + 1 < s.length()) {
+                String sub = s.substring(i, i + 2);
+                if (sub.equals("CM") || sub.equals("CD")
+                        || sub.equals("XC") || sub.equals("XL")
+                        || sub.equals("IX") || sub.equals("IV")) {
+                    target = sub;
+                    i += 2;
+                } else {
+                    i += 1;
+                }
+            } else {
+                i += 1;
+            }
+            int j = 0;
+            while (j < arab.length) {
+                if (arab[j].equals(target)) {
+                    index = j;
+                    break;
+                }
+                j++;
+            }
+            res += number[index];
+        }
+        return res;
+    }
+
+//    private static Map<String, Integer> getMap() {
+//        int[] number = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+//        String[] arab = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+//        Map<String, Integer> map = new HashMap<>(13);
+//        for (int i = 0; i < number.length; i++) {
+//            map.put(arab[i], number[i]);
+//        }
+//        return map;
+//    }
 }

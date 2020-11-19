@@ -8,6 +8,7 @@ import com.zbkbl.demo.service.AopTestServiceImpl;
 import com.zbkbl.demo.service.SpringEventService;
 import com.zbkbl.demo.vo.StudentVo;
 import com.zbkbl.demo.vo.UserVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ import java.util.Set;
  **/
 @Controller
 @RequestMapping(value = "/api/v1/test")
+@Slf4j
 public class TestController {
 
     @Autowired
@@ -40,6 +42,9 @@ public class TestController {
     @Resource
     private SpringEventService springEventService;
 
+    @Resource(name = "studentByFactoryBean")
+    private StudentVo studentVo;
+
     @RequestMapping(value = "/getUser")
     @ResponseBody
     public UserVo getUser(@RequestParam(value = "id") Long id) {
@@ -50,6 +55,7 @@ public class TestController {
     @ResponseBody
     public String hello() {
         springEventService.publishEventAsync(new DemoEvent("liuyang",26));
+        log.info("student:{}", studentVo);
         return "success";
     }
 
