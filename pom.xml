@@ -33,6 +33,7 @@
         <project.org.projectlombok.version>1.18.10</project.org.projectlombok.version>
         <project.rocket.learn.version>1.0.0-SNAPSHOT</project.rocket.learn.version>
         <project.rocket.demo.version>1.0.0-SNAPSHOT</project.rocket.demo.version>
+        <org.springframework-version>5.0.3.RELEASE</org.springframework-version>
 
     </properties>
 
