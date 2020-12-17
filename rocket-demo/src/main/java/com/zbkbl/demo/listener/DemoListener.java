@@ -4,6 +4,7 @@ import com.zbkbl.demo.event.DemoEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.SmartApplicationListener;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,12 +17,12 @@ import org.springframework.stereotype.Component;
 public class DemoListener implements SmartApplicationListener {
 
     @Override
-    public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
+    public boolean supportsEventType(@NonNull Class<? extends ApplicationEvent> eventType) {
         return eventType == DemoEvent.class;
     }
 
     @Override
-    public void onApplicationEvent(ApplicationEvent event) {
+    public void onApplicationEvent(@NonNull ApplicationEvent event) {
         if (event instanceof DemoEvent) {
             DemoEvent d = (DemoEvent) event;
             System.out.println("publish demo event success! name:" + d.getName() + ", age:" + d.getAge());
