@@ -70,6 +70,65 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <!-- 灰度环境 -->
+        <profile>
+            <id>gray1</id>
+            <properties>
+                <spring.profiles.active>gray1</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>gray2</id>
+            <properties>
+                <spring.profiles.active>gray2</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>arcgray</id>
+            <properties>
+                <spring.profiles.active>arcgray</spring.profiles.active>
+            </properties>
+        </profile>
+        <!-- 开发环境 -->
+        <profile>
+            <id>rd</id>
+            <properties>
+                <spring.profiles.active>rd</spring.profiles.active>
+            </properties>
+        </profile>
+        <!-- 生产环境 -->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <spring.profiles.active>prod</spring.profiles.active>
+            </properties>
+        </profile>
+        <!-- qa环境 -->
+        <profile>
+            <id>qa</id>
+            <properties>
+                <spring.profiles.active>qa</spring.profiles.active>
+            </properties>
+        </profile>
+        <!-- 预发环境 -->
+        <profile>
+            <id>preon</id>
+            <properties>
+                <spring.profiles.active>preon</spring.profiles.active>
+            </properties>
+        </profile>
+        <!-- 本地环境 -->
+        <profile>
+            <id>local</id>
+            <properties>
+                <spring.profiles.active>local</spring.profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <!--<plugin>-->

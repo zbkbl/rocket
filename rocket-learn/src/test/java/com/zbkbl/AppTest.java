@@ -1,7 +1,5 @@
 package com.zbkbl;
 
-import static org.junit.Assert.assertTrue;
-
 import abstractFactory.*;
 import abstractFactory.singleton.Singleton;
 import abstractFactory.staticFactory.Sender;
@@ -11,6 +9,12 @@ import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for simple App.
@@ -112,12 +116,246 @@ public class AppTest {
     @Test
     public void test7() {
         for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++){
-                if(j ==5){
+            for (int j = 0; j < 10; j++) {
+                if (j == 5) {
                     break;
                 }
-                System.out.println(i*j);
+                System.out.println(i * j);
             }
+        }
+    }
+
+    @Test
+    public void test8() {
+        CyclicBarrier barrier = new CyclicBarrier(5, () -> {
+            System.out.println("跑!");
+        });
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 5, 0, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(20));
+        for (int i = 0; i < 5; i++) {
+            int x = i;
+            executor.submit(() -> {
+                try {
+                    Thread.sleep(1000);
+                    System.out.println(Thread.currentThread().getName() + "===" + "线程" + x + "准备完毕!");
+                    barrier.await();
+                    System.out.println(Thread.currentThread().getName() + "===" + "线程" + x + "已经起跑!");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        try {
+            Thread.currentThread().join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void test11() {
+        int[] a = {3, 2, 1, 5, 6, 4};
+//        findKthLargest(a, 2);
+        partition(a, 0, a.length - 1);
+        System.out.println(a);
+    }
+
+    public static int findKthLargest(int[] nums, int k) {
+        int size = nums.length;
+        buildHeap(nums, size);
+        for (int i = nums.length - 1; i >= nums.length - k + 1; --i) {
+            int tmp = nums[0];
+            nums[0] = nums[i];
+            nums[i] = tmp;
+            size -= 1;
+            adjust(nums, 0, size);
+        }
+        return nums[0];
+    }
+
+    public static void buildHeap(int[] nums, int size) {
+        for (int i = size / 2; i >= 0; i--) {
+            adjust(nums, i, size);
+        }
+    }
+
+    public static void adjust(int[] heap, int n, int size) {
+        int l = 2 * n + 1;
+        int r = 2 * n + 2;
+        int largest = n;
+        if (l < size && heap[l] > heap[largest]) {
+            largest = l;
+        }
+
+        if (r < size && heap[r] > heap[largest]) {
+            largest = r;
+        }
+
+        if (largest != n) {
+            int tmp = heap[n];
+            heap[n] = heap[largest];
+            heap[largest] = tmp;
+            adjust(heap, largest, size);
+        }
+    }
+
+    static int quickSort(int[] nums, int l, int r) {
+        int i = l;
+        int j = r;
+        int x = nums[i];
+        while (i < j) {
+            while (i < j && nums[j] >= x) {
+                j--;
+            }
+            if (i < j) {
+                nums[i++] = nums[j];
+            }
+            while (i < j && nums[i] < x) {
+                i++;
+            }
+            if (i < j) {
+                nums[j--] = nums[i];
+            }
+        }
+        nums[i] = x;
+        return i;
+    }
+
+    static void partition(int[] nums, int l, int r) {
+        if (l < r) {
+            int i = quickSort(nums, l, r);
+            partition(nums, l, i - 1);
+            partition(nums, i + 1, r);
+        }
+    }
+
+    @Test
+    public void test22() {
+        int[] nums = {1, 0, -1, 0, -2, 2};
+        System.out.println(fourSum(nums, 0));
+    }
+
+
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        List<List<Integer>> list = new ArrayList<>();
+        int n = nums.length;
+        if (n < 4 || nums[0] + nums[1] + nums[2] + nums[3] > target ||
+                nums[n - 1] + nums[n - 2] + nums[n - 3] + nums[n - 4] < target) {
+            return list;
+        }
+        backTrace(nums, 0, 0, target, list, new LinkedList<>(), nums.length);
+        return list;
+    }
+
+    void backTrace(int[] nums, int low, int sum, int tar, List<List<Integer>> list, Deque<Integer> subList, int size) {
+        if (subList.size() == 4) {
+            if (sum == tar) {
+                list.add(new ArrayList<>(subList));
+            }
+            return;
+        }
+        for (int i = low; i < size; i++) {
+            if (size - i < 4 - subList.size()) {
+                return;
+            }
+            if (i > low && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            if (i < size - 1 && sum + nums[i] + (3 - subList.size()) * nums[i + 1] > tar) {
+                return;
+            }
+            if (i < size - 1 && sum + nums[i] + (3 - subList.size()) * nums[size - 1] < tar) {
+                continue;
+            }
+            sum += nums[i];
+            subList.push(nums[i]);
+            backTrace(nums, i + 1, sum, tar, list, subList, size);
+            subList.pop();
+            sum -= nums[i];
+
+        }
+    }
+
+
+    @Test
+    public void dpBag() {
+        int[] w = {1, 4, 3};
+        int[] v = {15, 30, 20};
+        int W = 4;
+        System.out.println(maxValue(w, v, W));
+    }
+
+    public int maxValue(int[] weight, int[] value, int W) {
+        int n = weight.length;
+        if (n == 0) {
+            return 0;
+        }
+        //dp[i][k] 表示前i个物品在k容量下的最大价值
+        int[][] dp = new int[n + 1][W + 1];
+        for (int i = 1; i <= n; i++) {
+            for (int k = 1; k <= W; k++) {
+                // k - weight[i-1] 放入当前物品后剩余的容量
+                // dp[i-1][k - weight[i-1]] 前 i-1 个物品在放入当前物品后的剩余容量下的最大价值
+                int withValue = k - weight[i - 1] >= 0 ? (value[i - 1] + dp[i - 1][k - weight[i - 1]]) : 0;
+                int withOutValue = dp[i - 1][k];
+                dp[i][k] = Math.max(withValue, withOutValue);
+            }
+        }
+        return dp[n][W];
+    }
+
+    @Test
+    public void debug() {
+//        ListNode head = new ListNode(0);
+        ListNode head = new ListNode(1);
+        head.next.next = new ListNode(2);
+        test(head, 0);
+    }
+
+    public ListNode test(ListNode head, int k){
+        ListNode p = head;
+        ListNode q = head;
+        if(head == null) return head;
+        int length = 0;
+        while (p != null) {
+            length += 1;
+            p = p.next;
+        }
+        p = head;
+        int size = k % length;
+        if(size == 0) return head;
+        for (int i = 0; i < size; i++) {
+            if (q.next != null) {
+                q = q.next;
+            }
+        }
+
+        for (int i = 0; i < size; i++) {
+            if (q.next != null) {
+                q = q.next;
+                p = p.next;
+            }
+        }
+        q.next = head;
+        head = p.next;
+        p.next = null;
+        return head;
+    }
+    public class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
         }
     }
 }
