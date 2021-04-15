@@ -358,4 +358,74 @@ public class AppTest {
             this.next = next;
         }
     }
+    int I = 0;
+
+    @Test
+    public void testt(){
+
+        String s = "qwe";
+        System.out.println(permutation(s));
+
+    }
+
+    public String[] permutation(String S) {
+        int N = getLength(S.length());
+        String[] ans = new String[N];
+        char[] chars = S.toCharArray();
+        backTrace(ans, chars,0);
+        return ans;
+    }
+
+    void backTrace(String[] res, char[] ch, int index) {
+        if (index == ch.length - 1) {
+            res[I++] = String.valueOf(ch);
+            return;
+        }
+
+        for (int i = 0; i < ch.length; i++) {
+            swap(ch, index, i);
+            backTrace(res, ch, index + 1);
+            swap(ch, index, i);
+        }
+
+    }
+
+    int getLength(int n) {
+        if (n == 1) {
+            return 1;
+        }
+        return n * getLength(n - 1);
+
+    }
+
+    void swap(char[] ch, int i, int j){
+        char cc = ch[i];
+        ch[i] = ch[j];
+        ch[j] = cc;
+    }
+
+    @Test
+    public void test3(){
+        System.out.println(combine(4,2));
+    }
+    List<List<Integer>> ans = new LinkedList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        backTrace(new LinkedList<>(), 1, n ,k);
+        return ans;
+    }
+
+    void backTrace(List<Integer> cur, int index, int n, int k) {
+        if (cur.size() == k) {
+            List<Integer> list = new LinkedList<>();
+            cur.forEach(c->list.add(c));
+            ans.add(list);
+            return;
+        } else {
+            for (int i = index; i < n; i++) {
+                cur.add(i);
+                backTrace(cur, index + 1, n, k);
+                cur.remove(cur.size() - 1);
+            }
+        }
+    }
 }
