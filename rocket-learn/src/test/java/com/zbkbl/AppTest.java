@@ -3,9 +3,12 @@ package com.zbkbl;
 import abstractFactory.*;
 import abstractFactory.singleton.Singleton;
 import abstractFactory.staticFactory.Sender;
+import com.google.common.collect.Lists;
 import builder.Meal;
 import builder.MealBuilder;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.googlecode.aviator.AviatorEvaluator;
 import org.junit.Test;
 
 import java.util.*;
@@ -13,6 +16,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
 
@@ -427,5 +431,59 @@ public class AppTest {
                 cur.remove(cur.size() - 1);
             }
         }
+    }
+
+    @Test
+    public void testjson(){
+        String s = "[{\"database\":\"xxxx\",\"table\":\"xxx\",\"fields\":[\"xxx\",\"xxx\"]},{\"database\":\"xxxx\",\"table\":\"xxx\",\"fields\":[\"xxx\",\"xxx\"]}]";
+        JSONArray jsonArray = JSONArray.parseArray(s);
+        Iterator<Object> iterator = jsonArray.stream().iterator();
+        while (iterator.hasNext()){
+            Object o = iterator.next();
+            System.out.println(o);
+        }
+    }
+
+    @Test
+    public void testFilter(){
+        List<Integer> list = Lists.newArrayList(1,2,3,4,5);
+        List<Integer> collect = list.stream().filter(i -> i == 1).collect(Collectors.toList());
+        System.out.println(collect);
+    }
+
+    @Test
+    public void testJson(){
+        JSONObject uiInfo = new JSONObject();
+        String kolFaceToFaceInviteUIInfo = "{\n" +
+                "\t\"step1\": {\n" +
+                "\t\t\"mainTitle\": \"第1步：保存推广海报\",\n" +
+                "\t\t\"comment\": \"专属拉新二维码，新人扫码下单后你可获得返现～\",\n" +
+                "\t\t\"posterPicUrl\": \"https://1232.com\",\n" +
+                "\t\t\"buttonTitle\": \"保存海报\"\n" +
+                "\t},\n" +
+                "\t\"step2\": {\n" +
+                "\t\t\"mainTitle\": \"第2步：复制推广文案\",\n" +
+                "\t\t\"comment\": \"好的文案可以吸引新人更快下单哦～\",\n" +
+                "\t\t\"copywriting\": [\"我发现了一个超级实惠的外卖平台，美团做的，正在大力补贴，一顿饭只要几块钱，太划算了。微信扫码直接下单，快来试试吧！\", \"美团出了一个新的外卖平台，主打优惠，全场均价5.9元，还不需要配送费，太便宜了。微信扫码直接下单，赶紧来试试吧！\", \"美团这次大手笔！外卖超值福利大补贴，每人限领一次，全场外卖几块钱就可以吃，还有机会免单不要钱，太猛了。微信扫码直接下单，赶紧来抢！\", \"今天占了一个大便宜，美团出了新的外卖平台，大力补贴，一顿外卖只花了我五块多，说是每人只有一次机会，赶紧来抢吧。微信扫码可以直接下单，很方便！\"],\n" +
+                "\t\t\"buttonTitle\": \"复制文案\"\n" +
+                "\t},\n" +
+                "\t\"step3\": {\n" +
+                "\t\t\"mainTitle\": \"第3步：发朋友圈\",\n" +
+                "\t\t\"comment\": \"用保存的海报和复制的文案发朋友圈，邀请朋友圈里的好友下单。\\n\\n经过测试，多发几次朋友圈拉新效果更好，赚钱更多哦～\",\n" +
+                "\t\t\"frendsPicUrl\": \"https://1232.com\",\n" +
+                "\t\t\"buttonTitle\": \"现在就去发\"\n" +
+                "\t}\n" +
+                "}";
+        String kolFriendsUIInfo = "{\n" +
+                "\t\"top\": \"超值外卖福利\",\n" +
+                "\t\"main\": \"首单全额返现金\",\n" +
+                "\t\"sub\": \"免配送费\",\n" +
+                "\t\"guide\": \"微信扫码立即下单\\n首单可领「免单」福利\"\n" +
+                "}";
+        // 组装kol UI信息
+        uiInfo.put("kolFaceToFaceInviteUIInfo", JSONObject.parse(kolFaceToFaceInviteUIInfo));
+        uiInfo.put("kolFriendsUIInfo", JSONObject.parse(kolFriendsUIInfo));
+        String result = JSONObject.toJSONString(uiInfo);
+        System.out.println(result);
     }
 }
