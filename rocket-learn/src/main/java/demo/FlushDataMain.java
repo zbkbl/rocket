@@ -1,9 +1,5 @@
 package demo;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.math.BigDecimal;
-
 /**
  * @description: 刷数据程序
  * @author: Liuyang
