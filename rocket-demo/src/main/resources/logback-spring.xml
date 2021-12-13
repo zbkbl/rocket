@@ -7,21 +7,21 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoder的默认实现类是ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{5}:%L - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36}:%L - %msg%n</pattern>
         </encoder>
     </appender>
 
     <!-- all appender -->
     <appender name="allLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${rps.log}</File>
+        <File>logs/spring_demo.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>${rps.log}.%d{yyyy-MM-dd}</fileNamePattern>
+            <fileNamePattern>spring_demo.%d{yyyy-MM-dd}</fileNamePattern>
             <maxHistory>15</maxHistory>
         </rollingPolicy>
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %X{traceId} %level %logger{0} [%t] [%M:%L] - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %X{traceId} %level %logger{36} [%t] [%M:%L] - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -30,14 +30,14 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
-        <File>${rps-error.log}</File>
+        <File>logs/spring_error.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${rps-error.log}.%d{yyyy-MM-dd}</FileNamePattern>
+            <FileNamePattern>spring_error.%d{yyyy-MM-dd}</FileNamePattern>
             <maxHistory>15</maxHistory>
         </rollingPolicy>
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %X{traceId} %level %logger{0} [%t] [%M:%L] - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %X{traceId} %level %logger{36} [%t] [%M:%L] - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -103,13 +103,12 @@
             <appender-ref ref="STDOUT"/>
         </root>
     </springProfile>
+
     <springProfile name="!local">
         <root level="INFO">
             <appender-ref ref="allLogFile"/>
             <appender-ref ref="errorLogFile"/>
         </root>
     </springProfile>
-
-
 
 </configuration>

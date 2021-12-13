@@ -3,18 +3,12 @@ package com.zbkbl.demo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.zbkbl.demo.aviator.PhfEditionProduct;
 import com.zbkbl.demo.vo.MonitorChange;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import com.googlecode.aviator.AviatorEvaluator;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -55,14 +49,4 @@ class DemoApplicationTests {
         System.out.println(str.iterator().next());
     }
 
-    @Test
-    public void testAviator(){
-        PhfEditionProduct phfEditionProduct = new PhfEditionProduct();
-        phfEditionProduct.setOriPrice(10);
-        phfEditionProduct.setSingleShippingAmount(20);
-        phfEditionProduct.setSingleShippingSubsidy(3);
-        Map<String, Object> env = new HashMap<>();
-        env.put("p", phfEditionProduct);
-        System.out.println(AviatorEvaluator.execute("p.singleShippingAmount - p.singleShippingSubsidy", env));
-    }
 }
