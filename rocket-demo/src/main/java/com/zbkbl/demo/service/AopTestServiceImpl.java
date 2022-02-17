@@ -1,5 +1,6 @@
 package com.zbkbl.demo.service;
 
+import com.zbkbl.demo.annotation.Activity;
 import com.zbkbl.demo.annotation.FilterLogPoint;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Component;
 public class AopTestServiceImpl extends AopTestService {
     @Override
     @FilterLogPoint(name = "geek")
-    protected void test() {
+    @Activity(name = "pinhaofan")
+    @Activity(name = "tuanhaohuo")
+    public void test() {
         System.out.println("aopTestServiceImpl");
     }
 }

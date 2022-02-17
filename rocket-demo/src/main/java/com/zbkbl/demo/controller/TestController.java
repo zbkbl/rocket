@@ -4,6 +4,7 @@ import com.zbkbl.demo.dao.phoenix.UserDao;
 import com.zbkbl.demo.dao.pixiu.StudentDao;
 import com.zbkbl.demo.event.DemoEvent;
 import com.zbkbl.demo.po.IDResp;
+import com.zbkbl.demo.service.AopTestService;
 import com.zbkbl.demo.service.AopTestServiceImpl;
 import com.zbkbl.demo.service.SpringEventService;
 import com.zbkbl.demo.vo.StudentVo;
@@ -37,7 +38,7 @@ public class TestController {
     private StudentDao studentDao;
 
     @Autowired
-    private AopTestServiceImpl userService;
+    private AopTestService userService;
 
     @Resource
     private SpringEventService springEventService;
@@ -76,7 +77,7 @@ public class TestController {
         studentVoSet.add(s2);
         studentVoSet.add(s3);
         IDResp<StudentVo> idResp = new IDResp<>(studentVoSet);
-        userService.execute();
+        userService.test();
         return "success";
     }
 }

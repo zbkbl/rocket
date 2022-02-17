@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
 public class Jol {
 
     public static void main(String[] args) {
-        test3();
+        test2();
     }
 
     public static void test1() {
