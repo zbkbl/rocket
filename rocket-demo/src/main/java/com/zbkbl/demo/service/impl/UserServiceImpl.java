@@ -1,5 +1,6 @@
 package com.zbkbl.demo.service.impl;
 
+import com.zbkbl.demo.annotation.Activity;
 import com.zbkbl.demo.annotation.FilterLogPoint;
 import com.zbkbl.demo.po.IDResp;
 import com.zbkbl.demo.service.UserService;
@@ -34,5 +35,12 @@ public class UserServiceImpl implements UserService {
     @FilterLogPoint(name = "boss")
     public void testRawType2(IDResp<UserVo> idResp) {
         log.info("execute testRawType2 ....");
+    }
+
+    @Override
+    @Activity(name = "pinhaofan")
+    @Activity(name = "tuanhaohuo")
+    public void test() {
+        log.info("execute test ....");
     }
 }

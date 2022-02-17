@@ -7,6 +7,7 @@ import com.zbkbl.demo.po.IDResp;
 import com.zbkbl.demo.service.AopTestService;
 import com.zbkbl.demo.service.AopTestServiceImpl;
 import com.zbkbl.demo.service.SpringEventService;
+import com.zbkbl.demo.service.UserService;
 import com.zbkbl.demo.vo.StudentVo;
 import com.zbkbl.demo.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,7 @@ public class TestController {
     private StudentDao studentDao;
 
     @Autowired
-    private AopTestService userService;
+    private UserService userService;
 
     @Resource
     private SpringEventService springEventService;

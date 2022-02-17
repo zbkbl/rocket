@@ -1,5 +1,6 @@
 package com.zbkbl.demo.service;
 
+import com.zbkbl.demo.annotation.Activity;
 import com.zbkbl.demo.annotation.FilterLogPoint;
 import com.zbkbl.demo.po.IDResp;
 import com.zbkbl.demo.vo.StudentVo;
@@ -17,4 +18,8 @@ public interface UserService {
 
 
     void testRawType2(IDResp<UserVo> idResp);
+
+    @Activity(name = "interface")
+    @FilterLogPoint(name = "geek")
+    void test();
 }
