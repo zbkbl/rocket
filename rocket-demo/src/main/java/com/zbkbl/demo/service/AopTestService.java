@@ -1,5 +1,8 @@
 package com.zbkbl.demo.service;
 
+import com.zbkbl.demo.annotation.Activity;
+import com.zbkbl.demo.annotation.FilterLogPoint;
+
 /**
  * @author liuyang
  * @description
@@ -19,5 +22,7 @@ public abstract class AopTestService {
     /**
      * 外部调用没问题,内部调用会导致其子类实现的方法上的切点失效
      */
+    @Activity(name = "interface")
+    @FilterLogPoint(name = "geek")
     public abstract void test();
 }

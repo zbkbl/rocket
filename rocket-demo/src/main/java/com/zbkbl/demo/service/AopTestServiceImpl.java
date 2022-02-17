@@ -11,11 +11,12 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 public class AopTestServiceImpl extends AopTestService {
-    @Override
-    @FilterLogPoint(name = "geek")
+
+//    @FilterLogPoint(name = "geek")
     @Activity(name = "pinhaofan")
     @Activity(name = "tuanhaohuo")
+    @Override
     public void test() {
-        System.out.println("aopTestServiceImpl");
+        System.out.println("aopTestServiceImpl::test");
     }
 }
