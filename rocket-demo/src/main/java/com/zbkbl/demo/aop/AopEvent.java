@@ -52,6 +52,8 @@ import java.util.regex.Pattern;
 public class AopEvent {
 
     private final SpelExpressionParser parser = new SpelExpressionParser();
+    private final TemplateParserContext templateParserContext = new TemplateParserContext();
+
     /**SPEL表达式标识符*/
     public final String SPEL_FLAG = "#";
 
@@ -132,7 +134,7 @@ public class AopEvent {
         }
 
         try {
-            Expression expression = parser.parseExpression(template, new TemplateParserContext());
+            Expression expression = parser.parseExpression(template, templateParserContext);
             return Objects.requireNonNull(expression.getValue(context)).toString();
         }catch (Exception e){
             log.error("generateKeyBySpEl parse template error" ,e );
