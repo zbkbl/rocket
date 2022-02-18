@@ -23,7 +23,7 @@ import java.util.Set;
  * @date: 2022/2/17 10:19 下午
  */
 @Slf4j
-@Component("methodAroundAdvice")
+//@Component("methodAroundAdvice")
 public class MethodAroundAdvice implements MethodInterceptor {
 
     @Override
@@ -51,7 +51,7 @@ public class MethodAroundAdvice implements MethodInterceptor {
         Set<Class<? extends Annotation>> annotationTypes = new HashSet<>();
         annotationTypes.add(FilterLogPoint.class);
         annotationTypes.add(Activity.class);
-        // 获取该方法父方法的注解
+        // TODO findAllMergedAnnotations 可找到父类或接口上的注解
         Set<Annotation> allMergedAnnotations = AnnotatedElementUtils.findAllMergedAnnotations(invocation.getMethod(), annotationTypes);
         for(Annotation ac : allMergedAnnotations){
             if(ac.annotationType() == Activity.class){

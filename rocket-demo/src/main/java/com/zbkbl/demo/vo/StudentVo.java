@@ -24,4 +24,6 @@ public class StudentVo {
     private int age;
 
     private Timestamp updateTime;
+
+    private UserVo userVo;
 }

@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Activity(name = "pinhaofan")
-    @Activity(name = "tuanhaohuo")
-    public void test() {
+    @Activity(name = "pinhaofan", activityEnum = "zhuli", logEventEnum = "start", userId = "#{#studentVo.userVo.id}", bizId = "#{#studentVo.name}")
+//    @Activity(name = "tuanhaohuo")
+    public void test(StudentVo studentVo) {
         log.info("execute test ....");
     }
 }

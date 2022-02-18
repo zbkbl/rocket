@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @date: 2022/2/17 10:17 下午
  */
 @Slf4j
-@Component
+//@Component
 public class AnnotationMatchingPointcutEvent {
 
     /**

@@ -71,14 +71,14 @@ public class TestController {
     @ResponseBody
     public String rawType(){
         Set<StudentVo> studentVoSet = new HashSet<>();
-        StudentVo s1 = new StudentVo(222,"ly1","123456",25, new Timestamp(System.currentTimeMillis()));
-        StudentVo s2 = new StudentVo(333,"ly2","123456",26, new Timestamp(System.currentTimeMillis()));
-        StudentVo s3 = new StudentVo(444,"ly3","123456",27, new Timestamp(System.currentTimeMillis()));
+        StudentVo s1 = new StudentVo(222,"ly1","123456",25, new Timestamp(System.currentTimeMillis()), new UserVo(111, "spel", "test") );
+        StudentVo s2 = new StudentVo(333,"ly2","123456",26, new Timestamp(System.currentTimeMillis()), null);
+        StudentVo s3 = new StudentVo(444,"ly3","123456",27, new Timestamp(System.currentTimeMillis()), null);
         studentVoSet.add(s1);
         studentVoSet.add(s2);
         studentVoSet.add(s3);
         IDResp<StudentVo> idResp = new IDResp<>(studentVoSet);
-        userService.test();
+        userService.test(s1);
         return "success";
     }
 }

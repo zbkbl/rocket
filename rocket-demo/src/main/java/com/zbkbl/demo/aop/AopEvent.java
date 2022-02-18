@@ -11,19 +11,33 @@ import com.zbkbl.demo.vo.StudentVo;
 import com.zbkbl.demo.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.CodeSignature;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.Order;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.Expression;
+import org.springframework.expression.common.TemplateParserContext;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author liuyang
@@ -33,54 +47,96 @@ import java.util.Set;
 
 @Slf4j
 @Aspect
-@Order(-1)
-//@Component
+@Component
+@EnableAspectJAutoProxy
 public class AopEvent {
 
-
+    private final SpelExpressionParser parser = new SpelExpressionParser();
+    /**SPEL表达式标识符*/
+    public final String SPEL_FLAG = "#";
 
 //    @Around("execution(* com.zbkbl.demo..*.*(..)) && @annotation(filterLogPoint))")
-    @Around("execution(* com.zbkbl.demo..AopTestService.test(..)) || execution(* com.zbkbl.demo..AopTestService.execute(..))")
-    public Object rcdFilterLog(ProceedingJoinPoint jp) throws Throwable {
+//    @Around("execution(* com.zbkbl.demo..AopTestService.test(..)) || execution(* com.zbkbl.demo..AopTestService.execute(..))")
+    @Around("@annotation(activity)")
+    public Object rcdFilterLog(ProceedingJoinPoint jp, Activity activity) throws Throwable {
         log.info("begin aspect rcdFilterLog ....");
-        long start = System.currentTimeMillis();
-        Object[] args = jp.getArgs();
-//        String pointName = filterLogPoint.name();
-        Signature signature = jp.getSignature();
-        MethodSignature methodSignature = (MethodSignature) signature;
-        String[] parameterNames = methodSignature.getParameterNames();
-        // TODO findAllMergedAnnotations 可找到父类或接口上的注解
-        Set<Class<? extends Annotation>> annotationTypes = new HashSet<>();
-        annotationTypes.add(FilterLogPoint.class);
-        annotationTypes.add(Activity.class);
-        Set<Annotation> allMergedAnnotations = AnnotatedElementUtils.findAllMergedAnnotations(methodSignature.getMethod(), annotationTypes);
-        for(Annotation ac : allMergedAnnotations){
-            if(ac.annotationType() == Activity.class){
-                Activity at = (Activity) ac;
-                log.info("AnnotatedElementUtils Activity::name {}", at.name());
-            }
-            if(ac.annotationType() == FilterLogPoint.class){
-                FilterLogPoint fl = (FilterLogPoint) ac;
-                log.info("AnnotatedElementUtils Activity::name {}", fl.name());
-            }
-        }
-        Annotation[] annotations = methodSignature.getMethod().getAnnotations();
-        for (Annotation annotation :  annotations){
-            log.info("annotation:{}", annotation.annotationType());
-            if (annotation.annotationType() == FilterLogPoint.class){
-                FilterLogPoint fl = (FilterLogPoint) annotation;
-                String name = fl.name();
-                log.info("FilterLogPoint::name {}", name);
-            }
+        EvaluationContext context = new StandardEvaluationContext();
+        Map<String, Object> paramMap = this.getParamNameAndValues(jp, context);
 
-            if (annotation.annotationType() == RepeatActivity.class){
-                RepeatActivity ac = (RepeatActivity) annotation;
-                for(Activity activity : ac.value()){
-                    log.info("Activity::name {}", activity.name());
-                }
-            }
+        String activityEnum = activity.activityEnum();
+        String logEventEnum = activity.logEventEnum();
+
+        long userId = getUserId(activity.userId(), context);
+        String bizId = generateKeyBySpEl(activity.bizId(), context);
+
+        Object o = null;
+        try {
+            log.info("userId:{}, logEventEnum:{}. activityEnum:{}, bizId:{}, result:{}, param:{}", userId, logEventEnum, activityEnum, bizId, null, paramMap );
+            o = jp.proceed();
+            log.info("userId:{}, logEventEnum:{}. activityEnum:{}, bizId:{}, result:{}, param:{}", userId, logEventEnum, activityEnum, bizId,  o, (Object[]) null);
+            return o;
+        } catch (Throwable throwable) {
+            log.error("userId:{}, logEventEnum:{}. activityEnum:{}, bizId:{}, paramMap:{}, result:{}, e:{}", userId, logEventEnum, activityEnum, bizId, paramMap, o, throwable);
+            log.error("error",throwable);
         }
-        Object result = jp.proceed();
-        return result;
+        return o;
+    }
+
+    /**
+     * 获取userId
+     */
+    private long getUserId(String userIdExpression, EvaluationContext context) {
+        long userId = 0;
+
+        String userIdStr = generateKeyBySpEl(userIdExpression, context);
+        if (StringUtils.isNotEmpty(userIdStr) && NumberUtils.isParsable(userIdStr)) {
+            userId = Long.parseLong(userIdStr);
+        }
+
+//        //如果获取同参失败，再从同参获取一次
+//        if (userId == 0){
+//            userId = FlatCommonParamUtil.getUserId();
+//        }
+        return userId;
+    }
+
+    /**
+     * 获取形参列表及参数值
+     */
+    private Map<String, Object> getParamNameAndValues(ProceedingJoinPoint pjp, EvaluationContext context) {
+        Map<String, Object> map = new HashMap<>();
+
+        String[] parameterNames = ((CodeSignature) pjp.getSignature()).getParameterNames();
+        if (parameterNames == null || parameterNames.length <= 0) {
+            return map;
+        }
+
+        Object[] values = pjp.getArgs();
+        if (values == null || values.length <= 0 || parameterNames.length != values.length) {
+            return map;
+        }
+
+        for (int i = 0; i < parameterNames.length; i++) {
+            map.put(parameterNames[i], values[i]);
+            context.setVariable(parameterNames[i], values[i]);
+        }
+        return map;
+    }
+
+    /**
+     * 解析Spel表达式，动态获取参数
+     */
+    private String generateKeyBySpEl(String template, EvaluationContext context) {
+        if (StringUtils.isEmpty(template) || !template.contains(SPEL_FLAG)){
+            return template;
+        }
+
+        try {
+            Expression expression = parser.parseExpression(template, new TemplateParserContext());
+            return Objects.requireNonNull(expression.getValue(context)).toString();
+        }catch (Exception e){
+            log.error("generateKeyBySpEl parse template error" ,e );
+        }
+        return null;
     }
 }

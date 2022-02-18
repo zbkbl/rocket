@@ -14,4 +14,12 @@ public @interface Activity {
 
     String name() default "";
 
+    String activityEnum() default "";
+
+    String logEventEnum() default "";
+
+    String userId() default "";
+
+    String bizId() default "";
+
 }

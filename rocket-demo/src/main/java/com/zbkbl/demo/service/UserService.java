@@ -19,7 +19,6 @@ public interface UserService {
 
     void testRawType2(IDResp<UserVo> idResp);
 
-    @Activity(name = "interface")
     @FilterLogPoint(name = "geek")
-    void test();
+    void test(StudentVo studentVo);
 }
