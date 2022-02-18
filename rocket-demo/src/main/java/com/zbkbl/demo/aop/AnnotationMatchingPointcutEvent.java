@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @date: 2022/2/17 10:17 下午
  */
 @Slf4j
-//@Component
+@Component
 public class AnnotationMatchingPointcutEvent {
 
     /**
@@ -27,8 +27,8 @@ public class AnnotationMatchingPointcutEvent {
      * @return
      */
     @Bean(name = "filterLogMethodAdvisor")
-    public Advisor dataSourceAdvisor(@Qualifier("methodAroundAdvice") MethodAroundAdvice advice){
-        Pointcut pointcut = new AnnotationMatchingPointcut(null, FilterLogPoint.class, true);
+    public Advisor dataSourceAdvisor(@Qualifier("interfaceAopEvent") InterfaceAopEvent advice){
+        Pointcut pointcut = new AnnotationMatchingPointcut(null, Activity.class, true);
         return new DefaultPointcutAdvisor(pointcut, advice);
     }
 

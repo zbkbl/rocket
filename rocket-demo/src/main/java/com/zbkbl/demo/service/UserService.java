@@ -20,5 +20,6 @@ public interface UserService {
     void testRawType2(IDResp<UserVo> idResp);
 
     @FilterLogPoint(name = "geek")
+    @Activity(name = "pinhaofan", activityEnum = "zhuli", logEventEnum = "start", userId = "#{#studentVo.userVo.id}", bizId = "#{#studentVo.name}")
     void test(StudentVo studentVo);
 }
