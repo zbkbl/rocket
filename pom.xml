@@ -50,6 +50,7 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${project.org.projectlombok.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>

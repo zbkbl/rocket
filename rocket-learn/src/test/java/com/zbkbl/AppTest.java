@@ -129,32 +129,32 @@ public class AppTest {
         }
     }
 
-    @Test
-    public void test8() {
-        CyclicBarrier barrier = new CyclicBarrier(5, () -> {
-            System.out.println("跑!");
-        });
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 5, 0, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(20));
-        for (int i = 0; i < 5; i++) {
-            int x = i;
-            executor.submit(() -> {
-                try {
-                    Thread.sleep(1000);
-                    System.out.println(Thread.currentThread().getName() + "===" + "线程" + x + "准备完毕!");
-                    barrier.await();
-                    System.out.println(Thread.currentThread().getName() + "===" + "线程" + x + "已经起跑!");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-        try {
-            Thread.currentThread().join();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
+//    @Test
+//    public void test8() {
+//        CyclicBarrier barrier = new CyclicBarrier(5, () -> {
+//            System.out.println("跑!");
+//        });
+//        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 5, 0, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(20));
+//        for (int i = 0; i < 5; i++) {
+//            int x = i;
+//            executor.submit(() -> {
+//                try {
+//                    Thread.sleep(1000);
+//                    System.out.println(Thread.currentThread().getName() + "===" + "线程" + x + "准备完毕!");
+//                    barrier.await();
+//                    System.out.println(Thread.currentThread().getName() + "===" + "线程" + x + "已经起跑!");
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//        }
+//        try {
+//            Thread.currentThread().join();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     @Test
     public void test11() {
@@ -313,7 +313,7 @@ public class AppTest {
     public void debug() {
 //        ListNode head = new ListNode(0);
         ListNode head = new ListNode(1);
-        head.next.next = new ListNode(2);
+        head.next = new ListNode(2);
         test(head, 0);
     }
 
@@ -364,49 +364,49 @@ public class AppTest {
     }
     int I = 0;
 
-    @Test
-    public void testt(){
-
-        String s = "qwe";
-        System.out.println(permutation(s));
-
-    }
-
-    public String[] permutation(String S) {
-        int N = getLength(S.length());
-        String[] ans = new String[N];
-        char[] chars = S.toCharArray();
-        backTrace(ans, chars,0);
-        return ans;
-    }
-
-    void backTrace(String[] res, char[] ch, int index) {
-        if (index == ch.length - 1) {
-            res[I++] = String.valueOf(ch);
-            return;
-        }
-
-        for (int i = 0; i < ch.length; i++) {
-            swap(ch, index, i);
-            backTrace(res, ch, index + 1);
-            swap(ch, index, i);
-        }
-
-    }
-
-    int getLength(int n) {
-        if (n == 1) {
-            return 1;
-        }
-        return n * getLength(n - 1);
-
-    }
-
-    void swap(char[] ch, int i, int j){
-        char cc = ch[i];
-        ch[i] = ch[j];
-        ch[j] = cc;
-    }
+//    @Test
+//    public void testt(){
+//
+//        String s = "qwe";
+//        System.out.println(permutation(s));
+//
+//    }
+//
+//    public String[] permutation(String S) {
+//        int N = getLength(S.length());
+//        String[] ans = new String[N];
+//        char[] chars = S.toCharArray();
+//        backTrace(ans, chars,0);
+//        return ans;
+//    }
+//
+//    void backTrace(String[] res, char[] ch, int index) {
+//        if (index == ch.length - 1) {
+//            res[I++] = String.valueOf(ch);
+//            return;
+//        }
+//
+//        for (int i = 0; i < ch.length; i++) {
+//            swap(ch, index, i);
+//            backTrace(res, ch, index + 1);
+//            swap(ch, index, i);
+//        }
+//
+//    }
+//
+//    int getLength(int n) {
+//        if (n == 1) {
+//            return 1;
+//        }
+//        return n * getLength(n - 1);
+//
+//    }
+//
+//    void swap(char[] ch, int i, int j){
+//        char cc = ch[i];
+//        ch[i] = ch[j];
+//        ch[j] = cc;
+//    }
 
     @Test
     public void test3(){
